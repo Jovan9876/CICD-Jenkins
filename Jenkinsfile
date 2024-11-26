@@ -24,6 +24,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Build a Docker image for the application
+                sh 'ls'
                 sh 'docker build -t my-app:latest .'
             }
         }
