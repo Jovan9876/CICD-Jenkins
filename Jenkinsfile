@@ -5,7 +5,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 // Pull the latest code from the repository
-                git 'https://github.com/Jovan9876/CICD-Jenkins.git'
+                git branch: 'main', url: 'https://github.com/Jovan9876/CICD-Jenkins.git'
             }
         }
         stage('Install Dependencies') {
