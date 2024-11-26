@@ -31,7 +31,7 @@ pipeline {
                 docker --version
                 '''
                 sh 'ls'
-                sh 'docker build -t my-app:latest .'
+                sh 'docker build -t jovan9876/my-app:latest .'
             }
         }
         stage('Deploy') {
