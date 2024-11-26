@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./plugins.txt:/usr/share/jenkins/ref/plugins.txt
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+    command: >
+      bash -c "
+      apt-get update &&
+      apt-get install -y python3 python3-pip &&
+      echo 'Switching back to jenkins user' &&
+      runuser -u jenkins -- bash -c 'jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt && exec java -jar /usr/share/jenkins/jenkins.war'
+      "
+    user: root
+    restart: always
+
+  ngrok:
+    image: ngrok/ngrok
+    container_name: ngrok
+    ports:
+      - "4040:4040"
+    environment:
+      NGROK_AUTHTOKEN: "NGROK_AUTHTOKEN"
+      NGROK_DOMAIN: "DOMAIN"
+    command: http jenkins:8080 --url DOMAIN
+    depends_on:
+      - jenkins
+    restart: always
+
+volumes:
+  jenkins_home:
