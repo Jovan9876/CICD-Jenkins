@@ -24,6 +24,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Build a Docker image for the application
+                sh '''
+                whoami
+                groups
+                ls -l /var/run/docker.sock
+                docker --version
+                '''
                 sh 'ls'
                 sh 'docker build -t my-app:latest .'
             }
